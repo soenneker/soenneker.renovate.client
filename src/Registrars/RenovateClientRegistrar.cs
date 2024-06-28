@@ -8,12 +8,12 @@ namespace Soenneker.Renovate.Client.Registrars;
 /// <summary>
 /// A .NET HTTP client for Mend Renovate operations
 /// </summary>
-public static class RenovateClientUtilRegistrar
+public static class RenovateClientRegistrar
 {
     /// <summary>
     /// Adds <see cref="IRenovateClient"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddRenovateClientUtilAsSingleton(this IServiceCollection services)
+    public static void AddRenovateClientAsSingleton(this IServiceCollection services)
     {
         services.AddHttpClientCache();
         services.TryAddSingleton<IRenovateClient, RenovateClient>();
@@ -22,7 +22,7 @@ public static class RenovateClientUtilRegistrar
     /// <summary>
     /// Adds <see cref="IRenovateClient"/> as a scoped service. <para/>
     /// </summary>
-    public static void AddRenovateClientUtilAsScoped(this IServiceCollection services)
+    public static void AddRenovateClientAsScoped(this IServiceCollection services)
     {
         services.AddHttpClientCache();
         services.TryAddScoped<IRenovateClient, RenovateClient>();
