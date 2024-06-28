@@ -18,7 +18,7 @@ public class RenovateClient: IRenovateClient
 
     public ValueTask<HttpClient> Get()
     {
-        return _httpClientCache.Get(nameof(RenovateClient));
+        return _httpClientCache.Get(nameof(RenovateClient), null, true);
     }
 
     public void Dispose()
