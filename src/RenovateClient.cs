@@ -2,6 +2,7 @@ using Soenneker.Renovate.Client.Abstract;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Renovate.Client;
@@ -16,9 +17,9 @@ public class RenovateClient: IRenovateClient
         _httpClientCache = httpClientCache;
     }
 
-    public ValueTask<HttpClient> Get()
+    public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(nameof(RenovateClient), null, true);
+        return _httpClientCache.Get(nameof(RenovateClient), null, true, cancellationToken: cancellationToken);
     }
 
     public void Dispose()

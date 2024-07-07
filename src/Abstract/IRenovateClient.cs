@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Soenneker.Renovate.Client.Abstract;
@@ -9,5 +10,5 @@ namespace Soenneker.Renovate.Client.Abstract;
 /// </summary>
 public interface IRenovateClient : IDisposable, IAsyncDisposable
 {
-    ValueTask<HttpClient> Get();
+    ValueTask<HttpClient> Get(CancellationToken cancellationToken = default);
 }
