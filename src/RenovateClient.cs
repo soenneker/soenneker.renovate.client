@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using System.Threading;
 using Soenneker.Utils.HttpClientCache.Abstract;
+using Soenneker.Utils.HttpClientCache.Dtos;
 
 namespace Soenneker.Renovate.Client;
 
@@ -12,6 +13,8 @@ public class RenovateClient: IRenovateClient
 {
     private readonly IHttpClientCache _httpClientCache;
 
+    private readonly HttpClientOptions _options = new() { UseCookieContainer = true };
+
     public RenovateClient(IHttpClientCache httpClientCache)
     {
         _httpClientCache = httpClientCache;
@@ -19,7 +22,7 @@ public class RenovateClient: IRenovateClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(nameof(RenovateClient), null, true, cancellationToken: cancellationToken);
+        return _httpClientCache.Get(nameof(RenovateClient), _options, cancellationToken: cancellationToken);
     }
 
     public void Dispose()
