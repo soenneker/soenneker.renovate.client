@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Soenneker.Renovate.Client.Abstract;
 using Soenneker.Tests.FixturedUnit;
 using Xunit;
-using Xunit.Abstractions;
+
 
 namespace Soenneker.Renovate.Client.Tests;
 
