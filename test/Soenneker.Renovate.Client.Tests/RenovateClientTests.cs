@@ -1,19 +1,22 @@
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Soenneker.Renovate.Client.Abstract;
 using Soenneker.Tests.FixturedUnit;
 using Xunit;
 
-
 namespace Soenneker.Renovate.Client.Tests;
 
 [Collection("Collection")]
-public class RenovateClientUtilTests : FixturedUnitTest
+public class RenovateClientTests : FixturedUnitTest
 {
     private readonly IRenovateClient _util;
 
-    public RenovateClientUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public RenovateClientTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
         _util = Resolve<IRenovateClient>(true);
+    }
+
+    [Fact]
+    public void Default()
+    {
+
     }
 }
