@@ -13,18 +13,22 @@ public static class RenovateClientRegistrar
     /// <summary>
     /// Adds <see cref="IRenovateClient"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddRenovateClientAsSingleton(this IServiceCollection services)
+    public static IServiceCollection AddRenovateClientAsSingleton(this IServiceCollection services)
     {
-        services.AddHttpClientCache();
-        services.TryAddSingleton<IRenovateClient, RenovateClient>();
+        services.AddHttpClientCacheAsSingleton()
+                .TryAddSingleton<IRenovateClient, RenovateClient>();
+
+        return services;
     }
 
     /// <summary>
     /// Adds <see cref="IRenovateClient"/> as a scoped service. <para/>
     /// </summary>
-    public static void AddRenovateClientAsScoped(this IServiceCollection services)
+    public static IServiceCollection AddRenovateClientAsScoped(this IServiceCollection services)
     {
-        services.AddHttpClientCache();
-        services.TryAddScoped<IRenovateClient, RenovateClient>();
+        services.AddHttpClientCacheAsSingleton()
+                .TryAddScoped<IRenovateClient, RenovateClient>();
+
+        return services;
     }
 }
