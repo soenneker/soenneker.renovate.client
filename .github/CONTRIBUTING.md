@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Renovate.Client
+﻿# Contributing to Soenneker.Renovate.Client
 
 We're excited that you're interested in contributing!
 
