@@ -15,8 +15,7 @@ public static class RenovateClientRegistrar
     /// </summary>
     public static IServiceCollection AddRenovateClientAsSingleton(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton()
-                .TryAddSingleton<IRenovateClient, RenovateClient>();
+        services.AddHttpClientCacheAsSingleton().TryAddSingleton<IRenovateClient, RenovateClient>();
 
         return services;
     }
@@ -26,8 +25,7 @@ public static class RenovateClientRegistrar
     /// </summary>
     public static IServiceCollection AddRenovateClientAsScoped(this IServiceCollection services)
     {
-        services.AddHttpClientCacheAsSingleton()
-                .TryAddScoped<IRenovateClient, RenovateClient>();
+        services.AddHttpClientCacheAsSingleton().TryAddScoped<IRenovateClient, RenovateClient>();
 
         return services;
     }

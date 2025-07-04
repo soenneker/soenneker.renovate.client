@@ -1,7 +1,6 @@
 using Soenneker.Renovate.Client.Abstract;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System;
 using System.Threading;
 using Soenneker.Dtos.HttpClientOptions;
 using Soenneker.Utils.HttpClientCache.Abstract;
@@ -30,13 +29,11 @@ public sealed class RenovateClient : IRenovateClient
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
         _httpClientCache.RemoveSync(_clientId);
     }
 
     public ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
         return _httpClientCache.Remove(_clientId);
     }
 }
