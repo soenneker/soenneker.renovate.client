@@ -21,7 +21,8 @@ public sealed class RenovateClient : IRenovateClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(_clientId, () => new HttpClientOptions
+        // No closure: static lambda with no state needed
+        return _httpClientCache.Get(_clientId, static () => new HttpClientOptions
         {
             UseCookieContainer = true
         }, cancellationToken);
