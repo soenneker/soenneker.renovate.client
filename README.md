@@ -1,42 +1,45 @@
 [![](https://img.shields.io/nuget/v/soenneker.renovate.client.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.renovate.client/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.renovate.client/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.renovate.client/actions/workflows/publish-package.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.renovate.client.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.renovate.client/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.renovate.client/build-and-test.yml?label=build%20and%20test&style=for-the-badge)](https://github.com/soenneker/soenneker.renovate.client/actions/workflows/build-and-test.yml)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.renovate.client/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.renovate.client/actions/workflows/codeql.yml)
 
 # Soenneker.Renovate.Client
 
-A .NET HTTP client for Mend Renovate operations.
+Provides a cached, cookie-enabled `HttpClient` for Renovate automation.
 
-## Install
+## Installation and registration
 
 ```bash
 dotnet add package Soenneker.Renovate.Client
 ```
 
-## Quick start
-
 ```csharp
 using Soenneker.Renovate.Client.Registrars;
-using Microsoft.Extensions.DependencyInjection;
 
-var services = new ServiceCollection();
-var result = services.AddRenovateClientAsSingleton();
+services.AddRenovateClientAsScoped();
 ```
 
-Adds `IRenovateClient` as a singleton service.
+The scoped wrapper uses a singleton HTTP-client cache. Disposing a scope destroys the wrapper but deliberately keeps the shared `HttpClient` and its cookie container alive for later scopes. `AddRenovateClientAsSingleton()` is also available.
 
-## What you get
+## Use
 
-- `IRenovateClient` — A .NET HTTP client for Mend Renovate operations.
-- `RenovateClientRegistrar` — A .NET HTTP client for Mend Renovate operations.
+```csharp
+using Soenneker.Renovate.Client.Abstract;
 
-## API at a glance
+HttpClient client = await renovateClient.Get(cancellationToken);
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `RenovateClientRegistrar.AddRenovateClientAsSingleton(services)` | Adds `IRenovateClient` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `RenovateClientRegistrar.AddRenovateClientAsScoped(services)` | Adds `IRenovateClient` as a scoped service. | The same service collection, so additional registrations can be chained. |
+using var request = new HttpRequestMessage(
+    HttpMethod.Get,
+    "https://developer.mend.io/api/example");
 
-## Practical notes
+request.Headers.Authorization =
+    new AuthenticationHeaderValue("Bearer", token);
 
-- Dispose instances you own when their scope ends so held resources can be released.
+using HttpResponseMessage response =
+    await client.SendAsync(request, cancellationToken);
+
+response.EnsureSuccessStatusCode();
+```
+
+The package does not set a base address, authentication, default headers, or an API-specific contract. Use absolute request URIs and configure each request with the credentials required by the endpoint. Do not dispose the returned `HttpClient`; its cache owns it.

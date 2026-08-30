@@ -7,16 +7,21 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Renovate.Client;
 
-/// <inheritdoc cref="IRenovateClient"/>
 public sealed class RenovateClient : IRenovateClient
 {
     private readonly IHttpClientCache _httpClientCache;
+    private readonly bool _ownsCachedClient;
 
     private const string _clientId = nameof(RenovateClient);
 
-    public RenovateClient(IHttpClientCache httpClientCache)
+    public RenovateClient(IHttpClientCache httpClientCache) : this(httpClientCache, true)
+    {
+    }
+
+    internal RenovateClient(IHttpClientCache httpClientCache, bool ownsCachedClient)
     {
         _httpClientCache = httpClientCache;
+        _ownsCachedClient = ownsCachedClient;
     }
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
@@ -33,7 +38,8 @@ public sealed class RenovateClient : IRenovateClient
     /// </summary>
     public void Dispose()
     {
-        _httpClientCache.RemoveSync(_clientId);
+        if (_ownsCachedClient)
+            _httpClientCache.RemoveSync(_clientId);
     }
 
     /// <summary>
@@ -42,6 +48,6 @@ public sealed class RenovateClient : IRenovateClient
     /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync()
     {
-        return _httpClientCache.Remove(_clientId);
+        return _ownsCachedClient ? _httpClientCache.Remove(_clientId) : ValueTask.CompletedTask;
     }
 }

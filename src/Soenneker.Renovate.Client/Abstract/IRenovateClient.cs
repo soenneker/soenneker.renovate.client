@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 namespace Soenneker.Renovate.Client.Abstract;
 
 /// <summary>
-/// A .NET HTTP client for Mend Renovate operations
+/// Provides access to a cached, cookie-enabled HTTP client for Renovate automation.
 /// </summary>
 public interface IRenovateClient : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Returns the configured HTTP client used by the Renovate Client.
+    /// Gets the shared HTTP client.
     /// </summary>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>A task whose result is the requested HTTP client.</returns>
+    /// <returns>The cached HTTP client. Callers must not dispose it.</returns>
     ValueTask<HttpClient> Get(CancellationToken cancellationToken = default);
 }
