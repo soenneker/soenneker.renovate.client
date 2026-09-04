@@ -7,6 +7,7 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Renovate.Client;
 
+/// <inheritdoc cref="IRenovateClient" />
 public sealed class RenovateClient : IRenovateClient
 {
     private readonly IHttpClientCache _httpClientCache;
